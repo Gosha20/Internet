@@ -1,0 +1,484 @@
+
+####R1AR0####
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R1AR0
+R1AR0(config)#int s2/0
+R1AR0(config-if)#no shut
+R1AR0(config-if)#no shutdown 
+
+%LINK-5-CHANGED: Interface Serial2/0, changed state to down
+R1AR0(config-if)#ip add
+R1AR0(config-if)#ip address 10.1.1.1 255.255.255.0
+R1AR0(config-if)#exit
+	
+R1AR0(config)#int fa0/0
+R1AR0(config-if)#ip add
+R1AR0(config-if)#ip address 10.2.2.1 255.255.255.0
+R1AR0(config-if)#no shut
+R1AR0(config-if)#no shutdown 
+
+R1AR0(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+R1AR0(config-if)#exit
+R1AR0(config)#router ospf 1
+R1AR0(config-router)#rout
+R1AR0(config-router)#router-id 1.1.1.1
+R1AR0(config-router)#net
+R1AR0(config-router)#network 10.1.1.0 0.0.0.255 area 0
+R1AR0(config-router)#network 10.2.2.0 0.0.0.255 area 0
+
+
+
+####R2AR0####
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#host
+Router(config)#hostname R2AR0
+R2AR0(config)#int fa0/0
+R2AR0(config-if)#ip add
+R2AR0(config-if)#ip address 10.2.2.2 255.255.255.0
+R2AR0(config-if)#no shut
+R2AR0(config-if)#no shutdown 
+
+R2AR0(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+R2AR0(config-if)#exit
+R2AR0(config)#int s2/0
+R2AR0(config-if)#ip add
+R2AR0(config-if)#ip address 10.3.3.1 255.255.255.0
+R2AR0(config-if)#no shut
+R2AR0(config-if)#no shutdown 
+
+%LINK-5-CHANGED: Interface Serial2/0, changed state to down
+R2AR0(config-if)#exit
+R2AR0(config)#int loop 0
+
+R2AR0(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+R2AR0(config-if)#ip add
+R2AR0(config-if)#ip address 10.21.0.1 255.255.255.255
+R2AR0(config-if)#exit
+R2AR0(config)#int loop 1
+
+R2AR0(config-if)#
+%LINK-5-CHANGED: Interface Loopback1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback1, changed state to up
+
+R2AR0(config-if)#ip address 10.21.1.1 255.255.255.255
+R2AR0(config-if)#exit
+R2AR0(config)#int loop 2
+
+R2AR0(config-if)#
+%LINK-5-CHANGED: Interface Loopback2, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback2, changed state to up
+
+R2AR0(config-if)#ip address 10.21.2.1 255.255.255.255
+R2AR0(config-if)#exit
+R2AR0(config)#int loop 3
+
+R2AR0(config-if)#
+%LINK-5-CHANGED: Interface Loopback3, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback3, changed state to up
+
+R2AR0(config-if)#ip address 10.21.3.1 255.255.255.255
+R2AR0(config-if)#exit
+R2AR0(config)#rout
+R2AR0(config)#router os
+R2AR0(config)#router ospf 1
+R2AR0(config-router)#rout
+R2AR0(config-router)#router-id 2.2.2.2
+R2AR0(config-router)#net
+R2AR0(config-router)#network 10.2.2.0 0.0.0.255 area 0
+00:12:16: %OSPF-5-ADJCHG: Process 1, Nbr 1.1.1.1 on FastEthernet0/0 from LOADING to FULL, Loading Done
+
+R2AR0(config-router)#network 10.21.0.0 0.0.255.255 area 0
+
+####ABR####
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#host
+Router(config)#hostname ABR
+ABR(config)#int s2/0
+ABR(config-if)#ip add
+ABR(config-if)#ip address 10.1.1.2 255.255.255.0
+ABR(config-if)#no shut
+ABR(config-if)#no shutdown 
+
+ABR(config-if)#
+%LINK-5-CHANGED: Interface Serial2/0, changed state to up
+
+ABR(config-if)#exit
+ABR(config)#int s3/0
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial2/0, changed state to up
+
+ABR(config-if)#ip 
+ABR(config-if)#ip add
+ABR(config-if)#ip address 192.168.1.1 255.255.255.0
+ABR(config-if)#exit
+ABR(config)#router os
+ABR(config)#router ospf 1
+ABR(config-router)#rout
+ABR(config-router)#router-id 1.1.2.2
+ABR(config-router)#net
+ABR(config-router)#network 10.0.0.0 0.255.255.255 area 0
+
+####R1AR0####
+R1AR0#show ip ospf database router
+
+            OSPF Router with ID (1.1.1.1) (Process ID 1)
+
+                Router Link States (Area 0)
+
+  LS age: 883
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 1.1.2.2
+  Advertising Router: 1.1.2.2
+  LS Seq Number: 80000003
+  Checksum: 0x8415
+  Length: 48
+  Area Border Router
+  Number of Links: 2
+
+    Link connected to: another Router (point-to-point)
+     (Link ID) Neighboring Router ID: 1.1.1.1
+     (Link Data) Router Interface address: 10.1.1.2
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 64
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.1.1.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 64
+
+  LS age: 849
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 1.1.1.1
+  Advertising Router: 1.1.1.1
+  LS Seq Number: 80000005
+  Checksum: 0xc9a2
+  Length: 60
+  Number of Links: 3
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 10.2.2.2
+     (Link Data) Router Interface address: 10.2.2.1
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: another Router (point-to-point)
+     (Link ID) Neighboring Router ID: 1.1.2.2
+     (Link Data) Router Interface address: 10.1.1.1
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 64
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.1.1.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 64
+
+  LS age: 849
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 2.2.2.2
+  Advertising Router: 2.2.2.2
+  LS Seq Number: 80000007
+  Checksum: 0x79da
+  Length: 84
+  Number of Links: 5
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.21.0.1
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.21.1.1
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.21.2.1
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.21.3.1
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 10.2.2.2
+     (Link Data) Router Interface address: 10.2.2.2
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+R1AR0#show ip ospf database network 
+
+            OSPF Router with ID (1.1.1.1) (Process ID 1)
+
+                Net Link States (Area 0)
+
+  Routing Bit Set on this LSA
+  LS age: 1148
+  Options: (No TOS-capability, DC)
+  LS Type: Network Links
+  Link State ID: 10.2.2.2  (address of Designated Router)
+  Advertising Router: 2.2.2.2
+  LS Seq Number: 80000001
+  Checksum: 0x292c
+  Length: 32
+  Network Mask: /24
+        Attached Router: 1.1.1.1
+        Attached Router: 2.2.2.2
+
+
+
+####ABR####
+
+ABR#(config)router ospf 1
+ABR#(config-router)network 192.168.1.0 0.0.0.255 area 1
+
+
+####R1AR1####
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R1AR1
+R1AR1(config)#int s2/0
+R1AR1(config-if)#no shut
+R1AR1(config-if)#no shutdown 
+
+%LINK-5-CHANGED: Interface Serial2/0, changed state to down
+R1AR1(config-if)#ip add
+R1AR1(config-if)#ip address 192.168.1.2 255.255.255.0
+R1AR1(config-if)#exit
+
+R1AR1(config)#int s3/0
+R1AR1(config-if)#no shut
+R1AR1(config-if)#no shutdown 
+
+%LINK-5-CHANGED: Interface Serial3/0, changed state to down
+R1AR1(config-if)#ip add
+R1AR1(config-if)#ip address 192.168.2.1 255.255.255.0
+R1AR1(config-if)#exit
+
+R1AR1(config)#router ospf 1
+R1AR1(config-router)#rout
+R1AR1(config-router)#router-id 3.3.3.3
+R1AR1(config-router)#net
+R1AR1(config-router)#network 192.168.0.0 0.0.255.255 area 1
+
+
+####ASBR####
+
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname ASBR
+ASBR(config)#int s2/0
+ASBR(config-if)#no shut
+ASBR(config-if)#no shutdown 
+
+%LINK-5-CHANGED: Interface Serial2/0, changed state to down
+ASBR(config-if)#ip add
+ASBR(config-if)#ip address 192.168.2.2 255.255.255.0
+ASBR(config-if)#exit
+
+ASBR(config)#router ospf 1
+ASBR(config-router)#rout
+ASBR(config-router)#router-id 4.4.4.4
+ASBR(config-router)#net
+ASBR(config-router)#network 192.168.2.0 0.0.0.255 area 1
+
+ASBR(config)#ip route 1.0.0.0 255.0.0.0 null0
+
+
+
+####R1AR0####
+R1AR0#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 6 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, Serial2/0
+C       10.2.2.0/24 is directly connected, FastEthernet0/0
+O       10.21.0.1/32 [110/2] via 10.2.2.2, 00:28:35, FastEthernet0/0
+O       10.21.1.1/32 [110/2] via 10.2.2.2, 00:28:35, FastEthernet0/0
+O       10.21.2.1/32 [110/2] via 10.2.2.2, 00:28:35, FastEthernet0/0
+O       10.21.3.1/32 [110/2] via 10.2.2.2, 00:28:35, FastEthernet0/0
+O IA 192.168.1.0/24 [110/128] via 10.1.1.2, 00:03:44, Serial2/0
+O IA 192.168.2.0/24 [110/192] via 10.1.1.2, 00:03:24, Serial2/0
+
+####R2AR0####
+
+R2AR0(config)#router rip
+R2AR0(config-router)#ver
+R2AR0(config-router)#version 2
+R2AR0(config-router)#net
+R2AR0(config-router)#network 10.0.0.0
+R2AR0(config-router)#exit
+R2AR0(config)#router ospf 1
+R2AR0(config-router)#redi
+R2AR0(config-router)#redistribute rip s
+R2AR0(config-router)#redistribute rip subnets 
+R2AR0(config-router)#exit
+
+####RTRRIP####
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostna
+Router(config)#hostname RTRRIP
+RTRRIP(config)#int s2/0
+RTRRIP(config-if)#ip add
+RTRRIP(config-if)#ip address 10.3.3.2 255.255.255.0
+RTRRIP(config-if)#no shut
+RTRRIP(config-if)#no shutdown 
+
+RTRRIP(config-if)#
+%LINK-5-CHANGED: Interface Serial2/0, changed state to up
+
+RTRRIP(config-if)#
+RTRRIP(config-if)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial2/0, changed state to up
+
+RTRRIP(config-if)#router rip
+RTRRIP(config-router)#ver
+RTRRIP(config-router)#version 2
+RTRRIP(config-router)#no auti
+RTRRIP(config-router)#no auto
+RTRRIP(config-router)#no auto-summary 
+RTRRIP(config-router)#net
+RTRRIP(config-router)#network 10.0.0.0
+RTRRIP(config-router)#net
+RTRRIP(config-router)#network 172.20.0.0
+RTRRIP(config-router)#exit
+RTRRIP(config)#int loop 0
+
+RTRRIP(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+RTRRIP(config-if)#ip add
+RTRRIP(config-if)#ip address 172.20.0.1 255.255.255.0
+RTRRIP(config-if)#exit
+RTRRIP(config)#int loop 1
+
+RTRRIP(config-if)#
+%LINK-5-CHANGED: Interface Loopback1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback1, changed state to up
+
+RTRRIP(config-if)#ip address 172.20.1.1 255.255.255.0
+RTRRIP(config-if)#exit
+RTRRIP(config)#int loop 2
+
+RTRRIP(config-if)#
+%LINK-5-CHANGED: Interface Loopback2, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback2, changed state to up
+
+
+
+
+####R1AR0####
+
+
+R1AR0#show ip route 
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 7 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, Serial2/0
+C       10.2.2.0/24 is directly connected, FastEthernet0/0
+O E2    10.3.3.0/24 [110/20] via 10.2.2.2, 00:02:59, FastEthernet0/0
+O       10.21.0.1/32 [110/2] via 10.2.2.2, 00:48:59, FastEthernet0/0
+O       10.21.1.1/32 [110/2] via 10.2.2.2, 00:48:59, FastEthernet0/0
+O       10.21.2.1/32 [110/2] via 10.2.2.2, 00:48:59, FastEthernet0/0
+O       10.21.3.1/32 [110/2] via 10.2.2.2, 00:48:59, FastEthernet0/0
+     172.20.0.0/24 is subnetted, 4 subnets
+O E2    172.20.0.0 [110/20] via 10.2.2.2, 00:01:59, FastEthernet0/0
+O E2    172.20.1.0 [110/20] via 10.2.2.2, 00:01:41, FastEthernet0/0
+O E2    172.20.2.0 [110/20] via 10.2.2.2, 00:01:29, FastEthernet0/0
+O E2    172.20.3.0 [110/20] via 10.2.2.2, 00:01:16, FastEthernet0/0
+O IA 192.168.1.0/24 [110/128] via 10.1.1.2, 00:24:09, Serial2/0
+O IA 192.168.2.0/24 [110/192] via 10.1.1.2, 00:23:49, Serial2/0
+
+ASBR(config)#router ospf 1
+ASBR(config-router)#area 1 stub
+ABR(config)#router ospf 1
+ABR(config-router)#area 1 stub
+R1AR0(config)#router ospf 1
+R1AR0(config-router)#area 1 stub
+
+R1AR1(config-router)#do sh ip ro
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+C    192.168.1.0/24 is directly connected, Serial2/0
+C    192.168.2.0/24 is directly connected, Serial3/0
+RTRRIP(config-if)#ip address 172.20.2.1 255.255.255.0
+RTRRIP(config-if)#exit
+RTRRIP(config)#int loop 3
+
+RTRRIP(config-if)#
+%LINK-5-CHANGED: Interface Loopback3, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback3, changed state to up
+
+RTRRIP(config-if)#ip address 172.20.3.1 255.255.255.0
+RTRRIP(config-if)#
+RTRRIP(config-if)#
+ASBR(config)#ip route 2.0.0.0 255.0.0.0 null0
+ASBR(config)#ip route 3.0.0.0 255.0.0.0 null0
