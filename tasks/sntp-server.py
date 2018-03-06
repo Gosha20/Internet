@@ -4,18 +4,16 @@ import time
 import struct
 import datetime
 
-
 def _to_frac(timestamp, n=32):
     return int(abs(timestamp - int(timestamp)) * 2**n)
 
 
+
 class SNTPConstants:
     _SYSTEM_EPOCH = datetime.date(*time.gmtime(0)[0:3])
-
     _SNTP_EPOCH = datetime.date(1900, 1, 1)
 
     SNTP_DELTA = (_SYSTEM_EPOCH - _SNTP_EPOCH).days * 24 * 3600
-
     LEAP_TABLE = {
         0: "no warning",
         1: "last minute has 61 seconds",
@@ -33,7 +31,6 @@ class SNTPConstants:
         6: "reserved for NTP control messages",
         7: "reserved for private use",
     }
-
     STRATUM = {
         0: "not specified or not available",
         1: "primary standard (for example, radio clock)",
