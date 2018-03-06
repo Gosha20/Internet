@@ -3,24 +3,18 @@ import socket
 import time
 import struct
 import datetime
-import ntplib
+
+
 def _to_frac(timestamp, n=32):
     return int(abs(timestamp - int(timestamp)) * 2**n)
 
 
-def _to_time(integ, frac, n=32):
-    return integ + float(frac) / 2 ** n
-
-
 class SNTPConstants:
     _SYSTEM_EPOCH = datetime.date(*time.gmtime(0)[0:3])
-    """system epoch"""
 
     _SNTP_EPOCH = datetime.date(1900, 1, 1)
-    """NTP epoch"""
 
     SNTP_DELTA = (_SYSTEM_EPOCH - _SNTP_EPOCH).days * 24 * 3600
-    """delta between system and NTP time"""
 
     LEAP_TABLE = {
         0: "no warning",
@@ -28,7 +22,6 @@ class SNTPConstants:
         2: "last minute has 59 seconds",
         3: "alarm condition (clock not synchronized)",
     }
-    """leap indicator table"""
 
     MODE_TABLE = {
         0: "reserved",
@@ -40,14 +33,11 @@ class SNTPConstants:
         6: "reserved for NTP control messages",
         7: "reserved for private use",
     }
-    """mode table"""
 
     STRATUM = {
         0: "not specified or not available",
         1: "primary standard (for example, radio clock)",
     }
-    """stratum table"""
-
 
 class SNTPPacket():
     _PACKET_FORMAT = "!B B B b 11I"
