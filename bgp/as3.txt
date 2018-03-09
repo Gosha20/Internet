@@ -1,0 +1,200 @@
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/2, changed state to up
+
+
+Router>
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#router bgp 300
+Router(config-router)#bgp rout
+Router(config-router)#bgp router-id 3.3.3.3
+Router(config-router)#nei
+Router(config-router)#neighbor 101.0.0.2 re
+Router(config-router)#neighbor 101.0.0.2 remote-as 100
+Router(config-router)#%BGP-5-ADJCHANGE: neighbor 101.0.0.2 Up
+
+Router(config-router)#exit
+Router(config)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#show ip bgp
+BGP table version is 1, local router ID is 3.3.3.3
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#int loop 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+Router(config-if)#ip add
+Router(config-if)#ip address 101.0.21.1 255.255.255.255
+Router(config-if)#exit
+Router(config)#int loop 1
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Loopback1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback1, changed state to up
+
+Router(config-if)#ip address 101.0.22.1 255.255.255.255
+Router(config-if)#exit
+Router(config)#router bgp
+% Incomplete command.
+Router(config)#router bgp 300
+Router(config-router)#network 100.0.21.0 mask 255.255.255.255
+Router(config-router)#network 100.0.22.0 mask 255.255.255.255
+Router(config-router)#exit
+Router(config)#int loop 0
+Router(config-if)#?
+  arp          Set arp type (arpa, probe, snap) or timeout
+  bandwidth    Set bandwidth informational parameter
+  cdp          CDP interface subcommands
+  crypto       Encryption/Decryption commands
+  delay        Specify interface throughput delay
+  description  Interface specific description
+  exit         Exit from interface configuration mode
+  ip           Interface Internet Protocol config commands
+  ipv6         IPv6 interface subcommands
+  no           Negate a command or set its defaults
+  shutdown     Shutdown the selected interface
+  standby      HSRP interface configuration commands
+Router(config-if)#no ?
+  arp          Set arp type (arpa, probe, snap) or timeout
+  bandwidth    Set bandwidth informational parameter
+  cdp          CDP interface subcommands
+  crypto       Encryption/Decryption commands
+  delay        Specify interface throughput delay
+  description  Interface specific description
+  ip           Interface Internet Protocol config commands
+  ipv6         IPv6 interface subcommands
+  shutdown     Shutdown the selected interface
+  standby      HSRP interface configuration commands
+Router(config-if)#no 
+% Incomplete command.
+Router(config-if)#exit
+Router(config)#
+Router(config)#
+Router(config)#interface GigabitEthernet0/0
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/2
+Router(config-if)#exit
+Router(config)#int loop 0
+Router(config-if)#ip add
+Router(config-if)#ip address 101.0.21.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#int loop 1
+Router(config-if)#ip address 101.0.22.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#router bgp 300
+Router(config-router)#no netw
+Router(config-router)#no network 101.0.21.0 mask 255.255.255.255
+Router(config-router)#no network 101.0.2.0 mask 255.255.255.255
+Router(config-router)#no network 101.0.22.0 mask 255.255.255.255
+Router(config-router)#net
+Router(config-router)#network 101.0.21.0 mask 255.255.255.0
+Router(config-router)#network 101.0.22.0 mask 255.255.255.0
+Router(config-router)#
+
+
+
+
+
+
+
+
+Router con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#router bgp 300
+Router(config-router)#nei
+Router(config-router)#neighbor 101.0.0.10 re
+Router(config-router)#neighbor 101.0.0.10 remote-as 411
+Router(config-router)#%BGP-5-ADJCHANGE: neighbor 101.0.0.10 Up
+
+Router(config-router)#net
+Router(config-router)#network 101.0.0.0 mask 255.255.255.252
+Router(config-router)#nei
+Router(config-router)#neighbor 101.0.0.6 rea
+Router(config-router)#neighbor 101.0.0.6 re
+Router(config-router)#neighbor 101.0.0.6 remote-as 211
+Router(config-router)#%BGP-5-ADJCHANGE: neighbor 101.0.0.6 Up
+
+Router(config-router)#no network 101.0.0.0 mask 255.255.255.252
+Router(config-router)#
+%BGP-3-NOTIFICATION: sent to neighbor 101.0.0.2 4/0 (hold time expired) 0 bytes 
+%BGP-5-ADJCHANGE: neighbor 101.0.0.2 Up
+
+
+
+
+
+
+
+
+
+Router con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Router>
+Router>wr mem
+          ^
+% Invalid input detected at '^' marker.
+	
+Router>en
+Router#wr mem
+Building configuration...
+[OK]
+Router#

@@ -1,0 +1,195 @@
+Router>en
+Router#show ip bgp
+BGP table version is 3, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+
+Router#show ip bgp
+BGP table version is 4, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+
+Router#show ip bgp
+BGP table version is 6, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+*> 104.0.21.0/24     101.0.0.1                0     0     0 300 411 i
+*> 104.0.22.0/24     101.0.0.1                0     0     0 300 411 i
+
+Router#show ip bgp
+BGP table version is 8, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+*> 102.0.21.0/24     101.0.0.1                0     0     0 300 211 i
+*> 102.0.22.0/24     101.0.0.1                0     0     0 300 211 i
+*> 104.0.21.0/24     101.0.0.1                0     0     0 300 411 i
+*> 104.0.22.0/24     101.0.0.1                0     0     0 300 411 i
+
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#router bgp 100
+Router(config-router)#neig
+Router(config-router)#neighbor 102.0.0.1 re
+Router(config-router)#neighbor 102.0.0.1 remote-as 211
+Router(config-router)#%BGP-5-ADJCHANGE: neighbor 102.0.0.1 Up
+
+Router(config-router)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+conf 
+Configuring from terminal, memory, or network [terminal]? exit
+?Must be "terminal", "memory" or "network"
+Router#
+Router#show ip bgp
+BGP table version is 15, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*  102.0.21.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*  102.0.22.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*> 104.0.21.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+*> 104.0.22.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#router bgp 100
+Router(config-router)#net
+Router(config-router)#network 101.0.0.0 mask 255.255.255.252
+Router(config-router)#exit
+Router(config)#
+Router(config)#
+Router(config)#exit
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#show ip bgp
+BGP table version is 17, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*                    102.0.0.1                0     0     0 211 411 300 i
+*>                   0.0.0.0                  0     0 32768 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*  102.0.21.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*  102.0.22.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*> 104.0.21.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+*> 104.0.22.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+
+Router#show ip bgp
+BGP table version is 17, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  101.0.0.0/30      101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*                    102.0.0.1                0     0     0 211 411 300 i
+*>                   0.0.0.0                  0     0 32768 i
+*> 101.0.21.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*> 101.0.22.0/24     101.0.0.1                0     0     0 300 i
+*                    102.0.0.1                0     0     0 211 300 i
+*  102.0.21.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*  102.0.22.0/24     101.0.0.1                0     0     0 300 211 i
+*>                   102.0.0.1                0     0     0 211 i
+*> 104.0.21.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+*> 104.0.22.0/24     101.0.0.1                0     0     0 300 411 i
+*                    102.0.0.1                0     0     0 211 411 i
+
+Router#
+%BGP-3-NOTIFICATION: received from neighbor 101.0.0.1 4/0 (hold time expired) 0 bytes 
+%BGP-5-ADJCHANGE: neighbor 101.0.0.1 Up
+
+
+
+
+
+
+
+
+
+Router con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Router>en
+Router#wr mem
+Building configuration...
+[OK]
+Router#
+
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#router bgp 100
+Router(config-router)#red
+Router(config-router)#redistribute ospf 1 ma
+Router(config-router)#redistribute ospf 1 match ex
+Router(config-router)#redistribute ospf 1 match external 
