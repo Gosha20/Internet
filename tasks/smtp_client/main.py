@@ -32,16 +32,10 @@ class Mail:
 
     def create_letter_in_byte(self, letter):
         with open(os.path.join(PATH_TO_DIR, letter), 'r', encoding='utf-8') as f:
-            message = ''
-            line = f.readline()
-            while line:
-                if re.match('^\.+\n$', line):
-                    message += line[:-1] + '.\n'
-                elif re.match('^\.+$', line):
-                    message += line + '.'
-                else:
-                    message += line
-                line = f.readline()
+            message = f.read()
+            if message[0] == '.':
+                message = '.' + message
+            message = message.replace('\n.', '\n..')
 
             letter = message.encode()
             return letter
