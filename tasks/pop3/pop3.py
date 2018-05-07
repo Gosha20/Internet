@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import sys
 
 BOUNDARY = "#-#-#-#--#-#-#-#--#-#-#-#--#-#-#-#--#-#-#-#--#-#-#-#--#-#-#--#-#-"
-
+regex = re.compile('(Subject: |\t)=\?utf-8\?B\?(.*?)\?=')
 
 def send_recv(command, sock):
     command_to_send = bytes(command, 'utf-8') + b'\n'
@@ -34,7 +34,7 @@ ADDRESS = ('pop.yandex.ru', 995)
 
 
 def get_headers(input):
-    print(func_for_parse('(From: )=\?utf-8\?B\?(.*?)\?=', input, 'From: '))
+    print(func_for_parse(r'(From: )=\?utf-8\?B\?(.*?)\?=', input, 'From: '))
     print(re.findall(r'To: .*?\n', input)[0])
     print(re.findall(r'Date: .*?\n', input)[0])
     print(func_for_parse('(Subject: |\t)=\?utf-8\?B\?(.*?)\?=', input, 'Subject: '))
@@ -51,7 +51,7 @@ def get_full_message(message):
     blocks = re.split('--'+boundary, message)[1:-1]
     for block in blocks:
         headers, masbytes = block.split('\r\n\r\n')
-        if headers.startswith('\r\nContent-Disposition: attachment;'):
+        if '\r\nContent-Disposition: attachment;' in headers:
             print(headers)
             filename = re.findall('filename="(.*)"', headers)[0]
             write(bytes(masbytes, 'utf-8'), filename)
@@ -63,12 +63,13 @@ def get_full_message(message):
 
 
 def func_for_parse(regex, input_str, header):
-    if re.findall(header + '=\?utf-8\?B', input_str):
+    if re.findall(header + '=\?utf-8\?B', input_str) or re.findall(header + '=\?UTF-8\?B', input_str):
+        input_str=input_str.replace('UTF-8','utf-8')
         string = [x[1] for x in re.findall(regex, input_str)]
         string = [bytes(x, 'utf-8') for x in string]
         return header + ''.join([base64.b64decode(x).decode('utf-8') for x in string])
     else:
-        return re.findall(header + '.*\n', input)[0]
+        return re.findall(header + '.*\n', input_str)[0]
 
 
 def main():
