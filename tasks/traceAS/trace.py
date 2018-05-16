@@ -3,6 +3,8 @@ import socket
 import whois
 from argparse import ArgumentParser
 import sys
+
+
 def trace(dist_ip):
     "seq_num=180 id=1"
     icmp_packet = b'\x08\x00\xf7\x4a\x00\x01\x00\xb4'
@@ -16,14 +18,18 @@ def trace(dist_ip):
         try:
             packet, ipPort = connetion.recvfrom(1024)
             cur_ip = ipPort[0]
-            message = '%d)   %i' % (ttl, cur_ip)
+            message = '%d)   %s' % (ttl, cur_ip)
             if public_ip(cur_ip):
                 message += ' ' + str(whois.simple_whois(cur_ip))
-            yield message + " its not public ip"
+                yield message
+
+            else:
+                yield message + " its not public ip"
         except socket.timeout:
             yield '*****   TimeOUT   *****'
         ttl += 1
     connetion.close()
+
 
 def public_ip(ip):
     local_ip_addresses_diapasons = (
@@ -36,6 +42,7 @@ def public_ip(ip):
         if diapason[0] <= ip <= diapason[1]:
             return False
     return True
+
 
 def init_parser():
     parser = ArgumentParser(prog="trace.py")

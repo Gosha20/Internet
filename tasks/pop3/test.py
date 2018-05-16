@@ -8,6 +8,8 @@ Subject: =?UTF-8?B?dGVtYSBuYSBhbmdsINC4INC90LAg0YDRg9GB0YHQutC+0Lwg0L3QsCDRgNGD0
 	=?UTF-8?B?0L7QvCDQvdCwINGA0YPRgdGB0LrQvtC8INC90LAg0YDRg9GB0YHQutC+0Lwg0L3QsCDRgNGD0YHRgdC6?=
 	=?UTF-8?B?0L7QvCDQvdCwINGA0YPRgdGB0LrQvtC8INGE0LjQvdCw0LvRjNC90LDRjyDRgdGC0YDQvtC60LA=?=
 To: nabgosha@yandex.ru
+Content-Type: multipart/mixed;
+	boundary="----==--bound.880449.web44g.yandex.ru"
 '''
 REGEX = re.compile('(Subject: |\t)=\?utf-8\?B\?(.*?)\?=')
 def get_headers(input):
@@ -27,4 +29,6 @@ def func_for_parse(regex, input_str, header):
         return re.findall(header + '.*\n', input_str)[0]
 
 
-get_headers(str)
+boundary = re.search('boundary="(.*?)"',str).group(1).replace('.','\.')
+print(boundary)
+# get_headers(str)
