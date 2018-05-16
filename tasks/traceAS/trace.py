@@ -9,7 +9,7 @@ def trace(dist_ip):
     connetion = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     ttl = 1
     cur_ip = None
-    connetion.settimeout(10)
+    connetion.settimeout(5)
     while ttl != 30 and cur_ip != dist_ip:
         connetion.setsockopt(socket.SOL_IP, socket.IP_TTL, ttl)
         connetion.sendto(icmp_packet, (dist_ip, 33434))
@@ -46,7 +46,7 @@ def init_parser():
 
 if __name__ == '__main__':
     parse = init_parser()
-    args = parse.parse_args(sys.argv[1:])
+    args = parse.parse_args()
     if args.ip is not None:
         for message in trace(args.ip):
             print(message)
